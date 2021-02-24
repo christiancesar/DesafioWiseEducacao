@@ -1,26 +1,19 @@
-import Shortener from '../model/Shortener';
+import Shortener from '../models/Shortener';
+import { EntityRepository, getCustomRepository, Repository } from 'typeorm';
 
-class ShortenerRepository{
-    private shorts: Shortener[];
+@EntityRepository(Shortener)
+class ShortenerRepository extends Repository<Shortener> {
 
-    constructor() {
-        this.shorts = [];
-    }
+    public async findSite(code: string): Promise<string> {
 
-    public create(url: string): Shortener {
-        const short = new Shortener(url);
-        this.shorts.push(short);
-        return short;
-    }
-
-    public all (): Shortener[] {
-        return this.shorts;
-    }
-    public findSite(code: String): Shortener | null {
-        const shortener = this.shorts.find(short => {
-            short.shortCode === code
+        const shortener = await this.findOne({
+            where: { code }
         });
-        return shortener || null;
+        if (shortener === undefined) {
+            throw new Error("Site not found!");
+            
+        }
+        return shortener.url;
     }
 }
 
