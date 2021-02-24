@@ -19,7 +19,7 @@ shortenerRouter.post('/', async(request, response) => {
 
         const createShortener = new CreateShortenerService();
         const shortener = await createShortener.execute(url);
-        return response.json(`${request.protocol}://${request.hostname}:${request.socket.localPort}/${shortener}`);
+        return response.json({ newUrl: `${request.protocol}://${request.hostname}:${request.socket.localPort}/${shortener}`});
     } catch (err) {
         return response.status(400).json({ error: err.message });
     }

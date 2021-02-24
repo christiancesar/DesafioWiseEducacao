@@ -10,7 +10,7 @@ accessSiteRouter.get('/:code', async (request, response) => {
         const shortenerRepository = getCustomRepository(ShortenerRepository);
 
         const shortener = await shortenerRepository.findSite(code);
-        return response.json(shortener);
+        return response.json({url: shortener});
     } catch (err) {
         return response.status(404).json({ error: err.message })
 
